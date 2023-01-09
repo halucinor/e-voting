@@ -10,24 +10,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "H3_USER")
+@Entity(name = "USER")
 public class UserModel extends BaseUserModel {
-//
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "userId")
-//    private List<UserCharacterModel> userCharacters;
-
-    // device info
-
-    // login count
-
-    // current Character
-
-    // character history
-
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "userId")
-//    private List<UserSettingModel> userSettings;
 
     public UserModel(String name, String email, Role role) {
         this.name = name;

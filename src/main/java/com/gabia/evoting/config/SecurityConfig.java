@@ -15,11 +15,10 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String[] PUBLIC_URI = {
-            "/user/me", "/h2-console/**",  "/h2-console", "*.html", "*.js", "/**"
+            "/user/me", "/h2-console/**",  "/h2-console", "*.html", "*.js", "/**" , "*.css", "/vue/**"
     };
 
     private final AuthenticationTokenProvider jwtAuthenticationTokenProvider;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .authorizeRequests()
                 .antMatchers(PUBLIC_URI).permitAll()
-//                .antMatchers("/**").permitAll()
-                .antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .logout()
