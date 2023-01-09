@@ -29,8 +29,9 @@ public class UserModel extends BaseUserModel {
 //    @JoinColumn(name = "userId")
 //    private List<UserSettingModel> userSettings;
 
-    public UserModel(String name, String email, String picture, Role role) {
+    public UserModel(String name, String email, Role role) {
         this.name = name;
+        this.email = email;
         this.role = role;
     }
 

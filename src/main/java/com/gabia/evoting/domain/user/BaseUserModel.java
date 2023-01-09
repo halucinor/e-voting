@@ -21,13 +21,17 @@ public class BaseUserModel {
     @Column(nullable = false)
     protected String name;
 
+    @Column(nullable = false)
+    protected String email;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     protected Role role;
 
     @Builder
-    public BaseUserModel(String name, Role role) {
+    public BaseUserModel(String name,String email, Role role) {
         this.name = name;
+        this.email = email;
         this.role = role;
     }
 

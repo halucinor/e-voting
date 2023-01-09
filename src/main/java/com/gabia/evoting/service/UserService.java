@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public UserModel createUser(String email){
-        UserModel member = new UserModel("user", email, "picture", Role.USER);
+        UserModel member = new UserModel("user", email, Role.USER);
         userRepository.save(member);
         return member;
     }
