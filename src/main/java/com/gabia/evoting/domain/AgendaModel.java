@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity(name = "AGENDA")
 public class AgendaModel {
@@ -40,10 +41,10 @@ public class AgendaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    @Column(nullable = false)
-    protected String name;
+    @Column
+    private String description;
 
     @Column(nullable = false)
     private LocalDateTime startDate;
@@ -58,6 +59,4 @@ public class AgendaModel {
     private Status status;
     @Column
     private Type type;
-
-
 }

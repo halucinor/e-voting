@@ -4,11 +4,13 @@ import com.gabia.evoting.domain.user.BaseUserModel;
 import com.gabia.evoting.domain.user.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity(name = "USER")
 public class UserModel extends BaseUserModel {
