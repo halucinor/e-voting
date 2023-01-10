@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity(name = "AGENDA")
 public class AgendaModel {
 
@@ -45,13 +44,13 @@ public class AgendaModel {
     private String description;
 
     @Column
-    private LocalDateTime startDatetime;
+    private LocalDateTime startDateTime;
 
     @Column
-    private LocalDateTime endDatetime;
+    private LocalDateTime endDateTime;
 
     @Column
-    private int max_vote;
+    private int maxVote;
 
     @Column(nullable = false)
     private Status status;
@@ -60,4 +59,14 @@ public class AgendaModel {
 
     @OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
     private List<VoteModel> voteModels;
+
+    @Builder
+    public AgendaModel(String description, LocalDateTime startDateTime, LocalDateTime endDateTime, int maxVote, Status status,Type type){
+        this.description = description;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.maxVote = maxVote;
+        this.status = status;
+        this.type = type;
+    }
 }

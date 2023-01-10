@@ -22,7 +22,7 @@ public class AgendaRequestDto  implements Serializable {
 
     private AgendaModel.Status status;
 
-    private int max_vote;
+    private int maxVote;
 
     private AgendaModel.Type type;
 }
