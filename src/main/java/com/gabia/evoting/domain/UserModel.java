@@ -12,8 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "USER")
+@Entity
 public class UserModel extends BaseUserModel {
+
+    @Column
+    private Long voteCount;
 
     public UserModel(String name, String email, Role role) {
         this.name = name;
@@ -26,6 +29,6 @@ public class UserModel extends BaseUserModel {
         return this;
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<VoteModel> voteModels;
 }

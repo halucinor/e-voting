@@ -45,13 +45,13 @@ public class AgendaModel {
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime startDatetime;
+    private LocalDateTime startDateTime;
 
     @Column
-    private LocalDateTime endDatetime;
+    private LocalDateTime endDateTime;
 
     @Column(nullable = false)
-    private int max_vote;
+    private int maxVote;
 
     @Column
     private Status status;

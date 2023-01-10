@@ -21,11 +21,6 @@ public class AgendaController extends AbstractController{
 
     private final AgendaService agendaService;
 
-//    @PostMapping("/agenda")
-//    public AgendaResponseDto createAgenda(AgendaRequestDto requestDto){
-//        return new AgendaResponseDto(agendaService.save(requestDto));
-//    }
-
     @Operation(summary = "안건 조회"
             , description = "id 로 넘겨 받은 안건에 대해 조회합니다.")
     @ApiResponses({
@@ -61,7 +56,8 @@ public class AgendaController extends AbstractController{
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
     })
-    @PutMapping("/agenda")
+
+    @PatchMapping("/agenda")
     public ResponseMessageDto<AgendaResponseDto> updateAgenda(AgendaChangeRequestDto requestDto){
         AgendaModel.Status status = requestDto.getStatus();
         Long agendaId = requestDto.getId();

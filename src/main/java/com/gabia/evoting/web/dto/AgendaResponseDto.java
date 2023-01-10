@@ -23,7 +23,7 @@ public class AgendaResponseDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime endDate;
 
-    private int max_vote;
+    private int maxVote;
 
     private AgendaModel.Status status;
 
@@ -32,9 +32,9 @@ public class AgendaResponseDto implements Serializable {
     public AgendaResponseDto(AgendaModel entity){
         this.id = entity.getId();
         this.description = entity.getDescription();
-        this.startDate = entity.getStartDatetime();
-        this.endDate = entity.getEndDatetime();
-        this.max_vote = entity.getMax_vote();
+        this.startDate = entity.getStartDateTime();
+        this.endDate = entity.getEndDateTime();
+        this.maxVote = entity.getMaxVote();
         this.status = entity.getStatus();
         this.type = entity.getType();
     }

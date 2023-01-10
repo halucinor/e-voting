@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class AgendaService {
     private final AgendaRepository agendaRepository;
 
-    @Transactional
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
     }
@@ -33,7 +32,7 @@ public class AgendaService {
         AgendaModel agenda = new AgendaModel();
 
         agenda.setDescription(agendaDto.getDescription());
-        agenda.setMax_vote(agendaDto.getMax_vote());
+        agenda.setMaxVote(agendaDto.getMaxVote());
         agenda.setStatus(agendaDto.getStatus());
         agenda.setType(agendaDto.getType());
 
@@ -54,7 +53,7 @@ public class AgendaService {
         AgendaModel agenda = agendaRepository.findById(agendaId)
                 .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
 
-        agenda.setStartDatetime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        agenda.setStartDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         agenda.setStatus(AgendaModel.Status.START);
 
         agendaRepository.save(agenda);
@@ -65,7 +64,7 @@ public class AgendaService {
         AgendaModel agenda = agendaRepository.findById(agendaId)
                 .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
 
-        agenda.setEndDatetime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        agenda.setEndDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         agenda.setStatus(AgendaModel.Status.END);
 
         agendaRepository.save(agenda);
