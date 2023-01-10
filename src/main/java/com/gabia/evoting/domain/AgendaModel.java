@@ -44,18 +44,18 @@ public class AgendaModel {
     @Column
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime startDatetime;
 
     @Column
     private LocalDateTime endDatetime;
 
-    @Column(nullable = false)
+    @Column
     private int max_vote;
 
-    @Column
+    @Column(nullable = false)
     private Status status;
-    @Column
+    @Column(nullable = false)
     private Type type;
 
     @OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)

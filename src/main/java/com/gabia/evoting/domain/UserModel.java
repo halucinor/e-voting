@@ -15,6 +15,9 @@ import java.util.List;
 @Entity
 public class UserModel extends BaseUserModel {
 
+    @Column
+    private long voteCount;
+
     public UserModel(String name, String email, Role role) {
         this.name = name;
         this.email = email;

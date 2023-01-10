@@ -1,8 +1,8 @@
 
 -- TEST_USER
-insert into H3_USER (id, email, name, role,dtype) values (1 ,'halucinor0@gmail.com','first', 'ADMIN', 'UserModel');
-insert into H3_USER (id, email, name, role,dtype) values (2 ,'sjbaek@gabia.com','second', 'USER', 'UserModel');
-insert into H3_USER (id, email, name, role,dtype) values (3 ,'test@gmail.com','third', 'USER', 'UserModel');
+insert into H3_USER (id, email, name, role, vote_count,dtype) values (1 ,'halucinor0@gmail.com','first', 'ADMIN',100, 'UserModel');
+insert into H3_USER (id, email, name, role, vote_count,dtype) values (2 ,'sjbaek@gabia.com','second', 'USER',200, 'UserModel');
+insert into H3_USER (id, email, name, role, vote_count,dtype) values (3 ,'test@gmail.com','third', 'USER',300, 'UserModel');
 -- TEST_AGENDA
 
 insert into AGENDA (id, description, start_datetime, end_datetime, max_vote, status, type) values (1, 'test agenda1', '2023-01-10T00:00:00','2023-01-10T00:30:00', 100000, 0, 0);
