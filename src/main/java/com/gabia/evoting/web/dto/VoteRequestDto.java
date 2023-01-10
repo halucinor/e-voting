@@ -10,4 +10,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 public class VoteRequestDto implements Serializable {
+
+    private Long AgendaId;
+
+    private int voteCount;
+
 }

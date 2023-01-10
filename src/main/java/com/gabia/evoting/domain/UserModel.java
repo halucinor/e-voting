@@ -26,6 +26,8 @@ public class UserModel extends BaseUserModel {
         return this;
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Column
+    private Long voteCount;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<VoteModel> voteModels;
 }
