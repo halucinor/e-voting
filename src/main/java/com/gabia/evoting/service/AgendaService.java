@@ -29,12 +29,12 @@ public class AgendaService {
 
     @Transactional
     public AgendaModel save(AgendaRequestDto agendaDto){
-        AgendaModel agenda = new AgendaModel();
-
-        agenda.setDescription(agendaDto.getDescription());
-        agenda.setMaxVote(agendaDto.getMaxVote());
-        agenda.setStatus(agendaDto.getStatus());
-        agenda.setType(agendaDto.getType());
+        AgendaModel agenda = AgendaModel.builder()
+                .description(agendaDto.getDescription())
+                .maxVote(agendaDto.getMaxVote())
+                .status(agendaDto.getStatus())
+                .type(agendaDto.getType())
+                .build();
 
         agendaRepository.save(agenda);
         return agenda;

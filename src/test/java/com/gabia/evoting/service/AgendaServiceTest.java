@@ -28,14 +28,12 @@ class AgendaServiceTest {
     @Test
     void agenda_save() {
 
-        AgendaModel agenda = new AgendaModel();
-        agenda.setId(1L);
-        agenda.setType(AgendaModel.Type.LIMIT);
-        agenda.setDescription("test");
-        agenda.setStatus(AgendaModel.Status.START);
-        agenda.setMaxVote(1000);
-        agenda.setStartDateTime(LocalDateTime.now());
-        agenda.setEndDateTime(LocalDateTime.now());
+        AgendaModel agenda = AgendaModel.builder()
+                .description("test")
+                .maxVote(10000)
+                .status(AgendaModel.Status.START)
+                .type(AgendaModel.Type.LIMIT)
+                .build();
 
         when(agendaRepository.save(any())).thenReturn(agenda);
 
