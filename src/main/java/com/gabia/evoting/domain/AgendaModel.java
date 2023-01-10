@@ -1,12 +1,10 @@
 package com.gabia.evoting.domain;
 
-import com.gabia.evoting.domain.user.BaseUserModel;
-import com.gabia.evoting.domain.user.Role;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 
 @Getter
@@ -29,8 +27,8 @@ public class AgendaModel {
 
     @Getter
     public enum Type {
-        Limit(0),
-        UnLimit(1);
+        LIMIT(0),
+        UNLIMIT(1);
 
         private final int value;
 
@@ -47,10 +45,10 @@ public class AgendaModel {
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private LocalDateTime startDatetime;
 
     @Column
-    private LocalDateTime endDate;
+    private LocalDateTime endDatetime;
 
     @Column(nullable = false)
     private int max_vote;
@@ -59,4 +57,7 @@ public class AgendaModel {
     private Status status;
     @Column
     private Type type;
+
+    @OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
+    private List<VoteModel> voteModels;
 }

@@ -25,4 +25,7 @@ public class UserModel extends BaseUserModel {
         this.name = name;
         return this;
     }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<VoteModel> voteModels;
 }

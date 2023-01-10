@@ -8,13 +8,10 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class AgendaResponseDto implements Serializable {
-    private Long id;
-
+public class AgendaRequestDto  implements Serializable {
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -23,19 +20,9 @@ public class AgendaResponseDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime endDate;
 
-    private int max_vote;
-
     private AgendaModel.Status status;
 
-    private AgendaModel.Type type;
+    private int max_vote;
 
-    public AgendaResponseDto(AgendaModel entity){
-        this.id = entity.getId();
-        this.description = entity.getDescription();
-        this.startDate = entity.getStartDatetime();
-        this.endDate = entity.getEndDatetime();
-        this.max_vote = entity.getMax_vote();
-        this.status = entity.getStatus();
-        this.type = entity.getType();
-    }
+    private AgendaModel.Type type;
 }
