@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AgendaService {
     private final AgendaRepository agendaRepository;
 
+
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
     }

@@ -82,6 +82,7 @@ public class VoteService {
         voteModel.setVotingDateTime(LocalDateTime.now()); //vote time
         voteRepository.save(voteModel);
 
+        //
         updateUserVote(user, successVote);
 
         response.setVoteStatus("success");
