@@ -25,9 +25,9 @@ public class VoteService {
     private final UserRepository userRepository;
 
     @Transactional(isolation=Isolation.SERIALIZABLE)
-    public VoteResponseDto vote(VoteRequestDto voteDto){
+    public VoteResponseDto vote(UserModel user,VoteRequestDto voteDto){
 
-        UserModel user = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("no user id : 1"));
+//        UserModel user = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("no user id : 1"));
         VoteResponseDto response = new VoteResponseDto();
         // Agenda check
         AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).orElseThrow(IllegalArgumentException::new);
@@ -35,7 +35,7 @@ public class VoteService {
         response.builder().userId(user.getId()).AgendaId(agenda.getId()).type(voteDto.getType()).build();
 
         // User check or If Agenda is not started return false
-        if(user.getVoteCount() <= 0 || agenda.getStatus() != AgendaModel.Status.START){
+        if(user.getVoteCount() < voteDto.getVoteCount() || agenda.getStatus() != AgendaModel.Status.START){
 //            response.builder()
 //                    .voteStatus("fail")
 //                    .voteFailCount(voteDto.getVoteCount())

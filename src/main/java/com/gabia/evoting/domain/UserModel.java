@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "USER")
+@Entity
 public class UserModel extends BaseUserModel {
 
     @Column

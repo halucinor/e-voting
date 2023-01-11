@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "H3_USER")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Entity(name = "H3_USER")
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BaseUserModel {
 

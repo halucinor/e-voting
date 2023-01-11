@@ -31,9 +31,9 @@ public class VoteController extends AbstractController{
     })
     @PostMapping("/vote")
     public ResponseMessageDto<VoteResponseDto> voteToAgenda(VoteRequestDto voteRequestDto){
-//        UserModel user = getUser();
-//        VoteResponseDto responseDto = voteService.vote(getUser(),voteRequestDto);
-        VoteResponseDto responseDto = voteService.vote(voteRequestDto);
+        UserModel user = getUser();
+        VoteResponseDto responseDto = voteService.vote(user,voteRequestDto);
+//        VoteResponseDto responseDto = voteService.vote(voteRequestDto);
 
         if(responseDto.getVoteStatus() == "fail")
             return failureMessage(responseDto);
