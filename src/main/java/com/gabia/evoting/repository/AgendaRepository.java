@@ -11,4 +11,5 @@ public interface AgendaRepository extends JpaRepository<AgendaModel, Long> {
     Optional<AgendaModel> findById(Long agendaId);
 
     List<AgendaModel> findAll();
+
 }

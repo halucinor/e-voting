@@ -5,10 +5,14 @@ import com.gabia.evoting.domain.VoteModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public interface VoteRepository extends JpaRepository<VoteModel, Long>{
     @Override
     Optional<VoteModel> findById(Long voteId);
+
+    List<VoteModel> findAllByAgendaId(Long agendaId);
+
 
 }

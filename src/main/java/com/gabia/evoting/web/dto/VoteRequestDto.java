@@ -1,5 +1,6 @@
 package com.gabia.evoting.web.dto;
 
+import com.gabia.evoting.domain.VoteModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,8 @@ public class VoteRequestDto implements Serializable {
 
     private Long AgendaId;
 
-    private int voteCount;
+    private Long voteCount;
+
+    private VoteModel.Type type;
 
 }
