@@ -7,6 +7,7 @@ import com.gabia.evoting.repository.AgendaRepository;
 import com.gabia.evoting.repository.UserRepository;
 import com.gabia.evoting.repository.VoteRepository;
 import com.gabia.evoting.web.dto.VoteRequestDto;
+import com.gabia.evoting.web.dto.VoteResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -24,18 +25,26 @@ public class VoteService {
     private final UserRepository userRepository;
 
     @Transactional(isolation=Isolation.SERIALIZABLE)
-    public boolean Vote(UserModel user, VoteRequestDto voteDto){
+    public VoteResponseDto vote(VoteRequestDto voteDto){
 
-        // User check
-        if(user.getVoteCount() <= 0)
-            return false;
-
+        UserModel user = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("no user id : 1"));
+        VoteResponseDto response = new VoteResponseDto();
         // Agenda check
         AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).orElseThrow(IllegalArgumentException::new);
 
-        // If Agenda is not started return false
-        if(agenda.getStatus() != AgendaModel.Status.START)
-            return false;
+        response.builder().userId(user.getId()).AgendaId(agenda.getId()).type(voteDto.getType()).build();
+
+        // User check or If Agenda is not started return false
+        if(user.getVoteCount() <= 0 || agenda.getStatus() != AgendaModel.Status.START){
+//            response.builder()
+//                    .voteStatus("fail")
+//                    .voteFailCount(voteDto.getVoteCount())
+//                    .voteSuccessCount(0L).build();
+            response.setVoteStatus("fail");
+            response.setVoteFailCount(voteDto.getVoteCount());
+            response.setVoteSuccessCount(0L);
+            return response;
+        }
 
         // Make dummy vote
         VoteModel voteModel = new VoteModel();
@@ -53,25 +62,33 @@ public class VoteService {
             Long remainVote = agenda.getMaxVote() - sumOfVote;
 
             //If agenda still have remain vote count then make vote
-            if(remainVote <= 0 )
-                return false;
+            if(remainVote <= 0) {
+                response.setVoteStatus("partial success");
+                response.setVoteFailCount(voteDto.getVoteCount());
+                response.setVoteSuccessCount(0L);
+                return response;
+            }
 
             successVote = Math.min(voteDto.getVoteCount(), remainVote);
             //when make vote, how many vote user can have -> min(remain, user vote count)
             voteModel.setCount(successVote);
 
-        } else if (agenda.getType() == AgendaModel.Type.UNLIMIT)
+        } else if (agenda.getType() == AgendaModel.Type.UNLIMIT) {
             //if Agenda has no Limitation
             successVote = voteDto.getVoteCount();
             voteModel.setCount(successVote);
-
+        }
         // Make Vote
         voteModel.setVotingDateTime(LocalDateTime.now()); //vote time
         voteRepository.save(voteModel);
 
         updateUserVote(user, successVote);
 
-        return true;
+        response.setVoteStatus("success");
+        response.setVoteFailCount(voteDto.getVoteCount() - successVote);
+        response.setVoteSuccessCount(successVote);
+
+        return response;
     }
 
     public Long getSumOfVote(AgendaModel agenda){
