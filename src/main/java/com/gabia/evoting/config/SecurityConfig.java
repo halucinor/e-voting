@@ -18,11 +18,24 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String[] PUBLIC_URI = {
-            "/login","/signup", "/user", "/h2-console/**",  "/h2-console", "*.html", "*.js", "/**" , "*.css",
+            // -- swagger ui
+            "/v2/api-docs",
+            "/v3/api-docs/**",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/file/**",
+            "/image/**",
+            "/swagger/**",
+            "/swagger-ui/**",
+            // other public endpoints of your API may be appended to this array
+            "/h2/**"
     };
 
     private final AuthenticationTokenProvider jwtAuthenticationTokenProvider;
@@ -33,25 +46,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers(PUBLIC_URI).permitAll()
+                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/api/agenda").hasRole("ADMIN")
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
-                .exceptionHandling()
+//                .exceptionHandling()
 //                        .authenticationEntryPoint(jwtAuthenticationEntriPoint)
-                .and()
+//                .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
+
 //                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
 
         // Add the customer filter. Cannot use the filter bean. See the detail in
         // https://stackoverflow.com/questions/39314176/filter-invoke-twice-when-register-as-spring-bean
 //        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), AnonymousAuthenticationFilter.class);
-        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
 
@@ -66,9 +80,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }

@@ -5,6 +5,7 @@ import com.gabia.evoting.repository.UserRepository;
 import com.gabia.evoting.service.AuthService;
 import com.gabia.evoting.service.UserService;
 import com.gabia.evoting.web.dto.JwtRequestDto;
+import com.gabia.evoting.web.dto.JwtResponseDto;
 import com.gabia.evoting.web.dto.ResponseMessageDto;
 import com.gabia.evoting.web.dto.UserSignupRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,11 @@ public class UserController extends AbstractController{
     private final AuthService authService;
 
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody JwtRequestDto request) {
+    public ResponseMessageDto<JwtResponseDto> login(@RequestBody JwtRequestDto request) {
         try {
-            return authService.login(request);
+            return successMessage(authService.login(request));
         }catch (Exception e){
-            return  e.getMessage();
+            return  failureMessage(new JwtResponseDto(e.getMessage()));
         }
     }
 
