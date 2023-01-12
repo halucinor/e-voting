@@ -3,10 +3,14 @@ package com.gabia.evoting.service;
 
 import com.gabia.evoting.domain.AgendaModel;
 import com.gabia.evoting.repository.AgendaRepository;
+import com.gabia.evoting.web.dto.AgendaRequestDto;
 import com.gabia.evoting.web.dto.AgendaResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,25 +27,47 @@ public class AgendaService {
         return agendaRepository.findById(agendaId);
     }
 
-
-    // TODO
-    public AgendaModel save(AgendaResponseDto agendaDto){
-        AgendaModel agenda = new AgendaModel();
-
-        agenda.setDescription(agendaDto.getDescription());
-        agenda.setStartDate(agendaDto.getStartDate());
-        agenda.setEndDate(agendaDto.getEndDate());
-        agenda.setMax_vote(100000); // TODO change
-        agenda.setStatus(agendaDto.getStatus());
-        agenda.setType(agendaDto.getType());
+    @Transactional
+    public AgendaModel save(AgendaRequestDto agendaDto){
+        AgendaModel agenda = AgendaModel.builder()
+                .description(agendaDto.getDescription())
+                .maxVote(agendaDto.getMaxVote())
+                .status(agendaDto.getStatus())
+                .type(agendaDto.getType())
+                .build();
 
         agendaRepository.save(agenda);
         return agenda;
     }
 
-    // TODO
-    public void delete(){
+    @Transactional
+    public void delete(Long agendaId){
+        AgendaModel agenda = agendaRepository.findById(agendaId)
+                        .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
 
+        agendaRepository.delete(agenda);
     }
 
+    @Transactional
+    public AgendaModel startAgenda(Long agendaId){
+        AgendaModel agenda = agendaRepository.findById(agendaId)
+                .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
+
+        agenda.setStartDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        agenda.setStatus(AgendaModel.Status.START);
+
+        agendaRepository.save(agenda);
+        return agenda;
+    }
+    @Transactional
+    public AgendaModel endAgenda(Long agendaId){
+        AgendaModel agenda = agendaRepository.findById(agendaId)
+                .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
+
+        agenda.setEndDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        agenda.setStatus(AgendaModel.Status.END);
+
+        agendaRepository.save(agenda);
+        return agenda;
+    }
 }
