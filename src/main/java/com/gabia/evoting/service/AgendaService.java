@@ -3,6 +3,8 @@ package com.gabia.evoting.service;
 
 import com.gabia.evoting.domain.AgendaModel;
 import com.gabia.evoting.repository.AgendaRepository;
+import com.gabia.evoting.schedule.TaskDefinitionBean;
+import com.gabia.evoting.schedule.TaskSchedulingService;
 import com.gabia.evoting.web.dto.AgendaRequestDto;
 import com.gabia.evoting.web.dto.AgendaResponseDto;
 import lombok.RequiredArgsConstructor;
