@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,6 +22,8 @@ class AgendaServiceTest {
 
     @Mock
     private AgendaRepository agendaRepository;
+
+//    private AgendaRepository realAgendaRepository;
     @InjectMocks
     private AgendaService agendaservice;
 
@@ -44,6 +47,9 @@ class AgendaServiceTest {
 
     @Test
     void agenda_list() {
+        AgendaModel agenda1 = new AgendaModel();
+
+        List<AgendaModel> agendaList = agendaRepository.findAll();
 
     }
 

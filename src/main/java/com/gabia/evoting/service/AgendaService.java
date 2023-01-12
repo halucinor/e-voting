@@ -8,12 +8,14 @@ import com.gabia.evoting.web.dto.AgendaResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+//import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +25,7 @@ public class AgendaService {
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
     }
-    public Optional<AgendaModel> findById(long agendaId){
+    public Optional<AgendaModel> findById(Long agendaId){
         return agendaRepository.findById(agendaId);
     }
 
