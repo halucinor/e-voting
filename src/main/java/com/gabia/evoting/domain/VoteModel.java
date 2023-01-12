@@ -39,7 +39,7 @@ public class VoteModel {
     private Type type;
 
     @Column
-    private int count;
+    private Long count;
 
     @Column
     private LocalDateTime votingDateTime;
