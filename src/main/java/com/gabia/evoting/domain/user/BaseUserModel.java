@@ -8,18 +8,13 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity(name = "H3_USER")
 public class BaseUserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
-
-    @Column(nullable = false)
-    protected String name;
 
     @Column(nullable = false)
     protected String email;
@@ -28,15 +23,13 @@ public class BaseUserModel {
     @Column(nullable = false)
     protected Role role;
 
-    @Builder
-    public BaseUserModel(String name,String email, Role role) {
-        this.name = name;
+    @Column(nullable = false, length=200)
+    protected String password;
+    @Column
+    private String authToken;
+
+    public BaseUserModel(String email, Role role) {
         this.email = email;
         this.role = role;
-    }
-
-    public BaseUserModel update(String name) {
-        this.name = name;
-        return this;
     }
 }

@@ -10,7 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "AGENDA")
+@NoArgsConstructor
 public class AgendaModel {
+
 
     @Getter
     public enum Status {
@@ -57,7 +59,7 @@ public class AgendaModel {
     @Column(nullable = false)
     private Type type;
 
-    @OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "agenda", fetch = FetchType.LAZY)
     private List<VoteModel> voteModels;
 
     @Builder
