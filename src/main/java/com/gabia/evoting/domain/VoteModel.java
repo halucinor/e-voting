@@ -28,11 +28,18 @@ public class VoteModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
+
+    @ManyToOne
+    @JoinColumn(name = "agenda_id")
+    private AgendaModel agenda;
     @Column
     private Type type;
 
     @Column
-    private int count;
+    private Long count;
 
     @Column
     private LocalDateTime votingDateTime;

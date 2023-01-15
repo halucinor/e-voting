@@ -26,8 +26,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
+	testImplementation 'junit:junit:4.13.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -36,6 +38,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation('org.mockito:mockito-core')
+	testImplementation('org.mockito:mockito-junit-jupiter')
+	testImplementation('org.hamcrest:hamcrest')
+	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
 
 tasks.named('test') {

@@ -2,6 +2,7 @@ package com.gabia.evoting.auth.jwt.impl;
 
 import com.gabia.evoting.auth.jwt.AuthenticationToken;
 import com.gabia.evoting.auth.jwt.AuthenticationTokenProvider;
+import com.gabia.evoting.domain.UserModel;
 import com.gabia.evoting.domain.user.BaseUserModel;
 import com.gabia.evoting.service.UserService;
 import io.jsonwebtoken.*;
@@ -68,6 +69,7 @@ public class JwtAuthenticationTokenProvider implements AuthenticationTokenProvid
     }
 
     @Override
+//    public Authentication getAuthentication(BaseUserModel user) {
     public Authentication getAuthentication(String token) {
         BaseUserModel user = userService.loadUserByUsername(getTokenSubject(token));
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRole().getKey());
