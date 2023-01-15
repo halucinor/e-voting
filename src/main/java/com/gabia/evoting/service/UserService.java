@@ -37,4 +37,12 @@ public class UserService {
         // 시큐리티에서 지정한 서비스이기 때문에 이 메소드를 필수로 구현
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException((email)));
     }
+
+    public void updateCount(Long userId, Long Count){
+        UserModel user = userRepository.findById(userId).orElseThrow(() ->
+                new IllegalArgumentException("사용자가 존재하지 않습니다. ID : " + userId));
+
+        user.setVoteCount(Count);
+        userRepository.save(user);
+    }
 }

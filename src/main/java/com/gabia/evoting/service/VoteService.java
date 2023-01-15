@@ -32,9 +32,15 @@ public class VoteService {
 
         VoteResponseDto response = new VoteResponseDto();
         // Agenda check
-        AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).orElseThrow(IllegalArgumentException::new);
+        AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).
+                orElseThrow(() -> new IllegalArgumentException("안건이 존재하지 않습니다. id = " + voteDto.getAgendaId()));
 
-        response.builder().userId(user.getId()).AgendaId(agenda.getId()).type(voteDto.getType()).build();
+
+        response.builder()
+                .userId(user.getId())
+                .AgendaId(agenda.getId())
+                .type(voteDto.getType())
+                .build();
 
         // User check or If Agenda is not started return false
         if(user.getVoteCount() < voteDto.getVoteCount() || agenda.getStatus() != AgendaModel.Status.START){
@@ -78,7 +84,7 @@ public class VoteService {
         }
         // Make Vote
         voteModel.setVotingDateTime(LocalDateTime.now()); //vote time
-        voteRepository.saveAndFlush(voteModel);
+        voteRepository.save(voteModel);
 
         //
         updateUserVote(user, successVote);
@@ -108,7 +114,11 @@ public class VoteService {
     }
 
     public AgendaVoteResponseDto getVoteStatus(Long agendaId, Boolean isAdmin){
+        agendaRepository.findById(agendaId).orElseThrow(() ->
+                new IllegalArgumentException("안건이 존재하지 않습니다. id = " + agendaId));
+
         List<VoteModel> voteList = voteRepository.findAllByAgendaId(agendaId);
+
         AgendaVoteResponseDto responseDto = new AgendaVoteResponseDto();
 
         responseDto.setAgendaId(agendaId);
