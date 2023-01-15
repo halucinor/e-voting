@@ -91,7 +91,7 @@ public class AgendaController extends AbstractController{
                                             LocalDateTime endTime){
 
         Instant instant = endTime.toInstant(ZoneOffset.UTC);
-        long delay = Date.from(instant).getTime() - (System.currentTimeMillis() + 32400000);
+        long delay = Date.from(instant).getTime() - (System.currentTimeMillis() + 32400000); //9시간 차이
 
         scheduledExecutorService.schedule(new Runnable() {
             @Override
