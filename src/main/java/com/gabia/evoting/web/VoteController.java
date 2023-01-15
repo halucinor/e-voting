@@ -2,18 +2,12 @@ package com.gabia.evoting.web;
 
 import com.gabia.evoting.domain.UserModel;
 import com.gabia.evoting.service.VoteService;
-import com.gabia.evoting.web.dto.AgendaResponseDto;
-import com.gabia.evoting.web.dto.ResponseMessageDto;
-import com.gabia.evoting.web.dto.VoteRequestDto;
-import com.gabia.evoting.web.dto.VoteResponseDto;
+import com.gabia.evoting.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,12 +27,21 @@ public class VoteController extends AbstractController{
     public ResponseMessageDto<VoteResponseDto> voteToAgenda(VoteRequestDto voteRequestDto){
         UserModel user = getUser();
         VoteResponseDto responseDto = voteService.vote(user,voteRequestDto);
-//        VoteResponseDto responseDto = voteService.vote(voteRequestDto);
 
         if(responseDto.getVoteStatus() == "fail")
             return failureMessage(responseDto);
         else{
             return successMessage(responseDto);
         }
+    }
+
+    @Operation(summary = "안건의 현황 조회"
+            , description = "안건의 투표 현황을 조회합니다..")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+    })
+    @GetMapping("/agendas/{id}/votes")
+    public ResponseMessageDto<AgendaVoteResponseDto> getAgendaVote(@PathVariable("id") Long id){
+        return successMessage(voteService.getVoteStatus(id, isAdminUser()));
     }
 }
