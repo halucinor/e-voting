@@ -11,3 +11,9 @@ insert into AGENDA (id, description, start_date_time, end_date_time, max_vote, s
 
 -- TEST_VOTE
 
+
+insert into VOTE (id, user_id, agenda_id, type, count, voting_date_time) values (100, 100, 100, 0, 10,'2023-01-10T00:30:00');
+insert into VOTE (id, user_id, agenda_id, type, count, voting_date_time) values (101, 101, 100, 1, 20,'2023-01-10T01:30:00');
+insert into VOTE (id, user_id, agenda_id, type, count, voting_date_time) values (102, 102, 100, 2, 30,'2023-01-10T02:30:00');
+
+

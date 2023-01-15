@@ -6,6 +6,8 @@ import com.gabia.evoting.domain.VoteModel;
 import com.gabia.evoting.repository.AgendaRepository;
 import com.gabia.evoting.repository.UserRepository;
 import com.gabia.evoting.repository.VoteRepository;
+import com.gabia.evoting.web.dto.AgendaVoteResponseDto;
+import com.gabia.evoting.web.dto.UserInfo;
 import com.gabia.evoting.web.dto.VoteRequestDto;
 import com.gabia.evoting.web.dto.VoteResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -107,5 +110,34 @@ public class VoteService {
     public void updateUserVote(UserModel user, Long subtract){
         user.setVoteCount(user.getVoteCount() - subtract);
         userRepository.save(user);
+    }
+
+    public AgendaVoteResponseDto getVoteStatus(Long agendaId, Boolean isAdmin){
+        List<VoteModel> voteList = voteRepository.findAllByAgendaId(agendaId);
+        AgendaVoteResponseDto responseDto = new AgendaVoteResponseDto();
+
+        responseDto.setAgendaId(agendaId);
+        if(isAdmin) {
+            List<UserInfo> userInfos = new ArrayList<>();
+            for (VoteModel vote : voteList) {
+                VoteModel.Type type = vote.getType();
+                responseDto.addVote(type, vote.getCount());
+                UserInfo user = UserInfo.builder()
+                        .id(vote.getUser().getId())
+                        .email(vote.getUser().getEmail())
+                        .type(vote.getType())
+                        .voteCnt(vote.getCount())
+                        .build();
+
+                userInfos.add(user);
+            }
+            responseDto.setUserInfoList(userInfos);
+        }else{
+            for (VoteModel vote : voteList) {
+                VoteModel.Type type = vote.getType();
+                responseDto.addVote(type, vote.getCount());
+            }
+        }
+        return responseDto;
     }
 }

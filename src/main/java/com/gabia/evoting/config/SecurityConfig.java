@@ -5,6 +5,7 @@ import com.gabia.evoting.auth.jwt.JwtTokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/api/agenda").hasRole("ADMIN")
-//                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/agenda").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH,"/api/agendas").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
 //                .exceptionHandling()
@@ -59,13 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
-
-//                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
-
         // Add the customer filter. Cannot use the filter bean. See the detail in
         // https://stackoverflow.com/questions/39314176/filter-invoke-twice-when-register-as-spring-bean
-//        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), AnonymousAuthenticationFilter.class);
-//        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        //  http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), AnonymousAuthenticationFilter.class);
+        //  http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtAuthenticationTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
 
@@ -86,5 +84,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
 }

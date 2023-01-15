@@ -5,6 +5,7 @@ import com.gabia.evoting.domain.AgendaModel;
 import com.gabia.evoting.repository.AgendaRepository;
 import com.gabia.evoting.web.dto.AgendaRequestDto;
 import com.gabia.evoting.web.dto.AgendaResponseDto;
+import com.gabia.evoting.web.dto.AgendaVoteResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

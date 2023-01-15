@@ -14,5 +14,4 @@ public interface VoteRepository extends JpaRepository<VoteModel, Long>{
 
     List<VoteModel> findAllByAgendaId(Long agendaId);
 
-
 }
