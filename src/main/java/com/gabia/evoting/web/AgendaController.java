@@ -10,9 +10,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +30,8 @@ import java.util.List;
 public class AgendaController extends AbstractController{
 
     private final AgendaService agendaService;
+    @Autowired
+    private ScheduledExecutorService scheduledExecutorService;
 
     @Operation(summary = "안건 조회"
             , description = "id 로 넘겨 받은 안건에 대해 조회합니다.")
@@ -70,5 +82,25 @@ public class AgendaController extends AbstractController{
             changedAgenda = agendaService.endAgenda(agendaId);
         }
         return successMessage(changedAgenda);
+    }
+
+    @GetMapping("/agendas/{id}/schedule/{time}")
+    public ResponseMessageDto<String> endSchedule(@PathVariable("id") Long id,
+                                            @PathVariable("time")
+                                            @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+                                            LocalDateTime endTime){
+
+        Instant instant = endTime.toInstant(ZoneOffset.UTC);
+        long delay = Date.from(instant).getTime() - (System.currentTimeMillis() + 32400000);
+
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                agendaService.endAgenda(id);
+                System.out.println("agenda " + id + " is ended!");
+                System.out.println("Task executed at : " + new Date());
+            }
+        }, delay, TimeUnit.MILLISECONDS);
+        return successMessage("Task scheduled successfully!");
     }
 }
