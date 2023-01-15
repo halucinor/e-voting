@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AgendaService {
     private final AgendaRepository agendaRepository;
 
-
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
     }
@@ -63,6 +62,7 @@ public class AgendaService {
         agendaRepository.save(agenda);
         return agenda;
     }
+
     @Transactional
     public AgendaModel endAgenda(Long agendaId){
         AgendaModel agenda = agendaRepository.findById(agendaId)

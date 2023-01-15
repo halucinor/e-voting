@@ -27,10 +27,9 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
 
-    @Transactional(isolation=Isolation.SERIALIZABLE)
-    public VoteResponseDto vote(UserModel user,VoteRequestDto voteDto){
+    @Transactional
+    public synchronized VoteResponseDto vote(UserModel user,VoteRequestDto voteDto){
 
-//        UserModel user = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("no user id : 1"));
         VoteResponseDto response = new VoteResponseDto();
         // Agenda check
         AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).orElseThrow(IllegalArgumentException::new);
@@ -39,10 +38,6 @@ public class VoteService {
 
         // User check or If Agenda is not started return false
         if(user.getVoteCount() < voteDto.getVoteCount() || agenda.getStatus() != AgendaModel.Status.START){
-//            response.builder()
-//                    .voteStatus("fail")
-//                    .voteFailCount(voteDto.getVoteCount())
-//                    .voteSuccessCount(0L).build();
             response.setVoteStatus("fail");
             response.setVoteFailCount(voteDto.getVoteCount());
             response.setVoteSuccessCount(0L);
@@ -59,14 +54,14 @@ public class VoteService {
 
         // Agenda Limitation check
         if(agenda.getType() == AgendaModel.Type.LIMIT){
-
             //If it has limitation, we should check remain vote count
             Long sumOfVote = getSumOfVote(agenda);
+            System.out.println("Sum of Vote : " + sumOfVote);
             Long remainVote = agenda.getMaxVote() - sumOfVote;
 
             //If agenda still have remain vote count then make vote
             if(remainVote <= 0) {
-                response.setVoteStatus("partial success");
+                response.setVoteStatus("fail");
                 response.setVoteFailCount(voteDto.getVoteCount());
                 response.setVoteSuccessCount(0L);
                 return response;
@@ -83,7 +78,7 @@ public class VoteService {
         }
         // Make Vote
         voteModel.setVotingDateTime(LocalDateTime.now()); //vote time
-        voteRepository.save(voteModel);
+        voteRepository.saveAndFlush(voteModel);
 
         //
         updateUserVote(user, successVote);
@@ -101,9 +96,9 @@ public class VoteService {
         Long total = 0L;
 
         // TODO : change with stream map
-        for (VoteModel vote : voteList)
+        for (VoteModel vote : voteList) {
             total += vote.getCount();
-
+        }
         return total;
     }
 
