@@ -2,10 +2,7 @@ package com.gabia.evoting.web;
 
 import com.gabia.evoting.domain.AgendaModel;
 import com.gabia.evoting.service.AgendaService;
-import com.gabia.evoting.web.dto.AgendaChangeRequestDto;
-import com.gabia.evoting.web.dto.AgendaRequestDto;
-import com.gabia.evoting.web.dto.AgendaResponseDto;
-import com.gabia.evoting.web.dto.ResponseMessageDto;
+import com.gabia.evoting.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

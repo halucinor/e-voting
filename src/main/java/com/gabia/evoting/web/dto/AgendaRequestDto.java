@@ -2,6 +2,7 @@ package com.gabia.evoting.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gabia.evoting.domain.AgendaModel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,4 +26,13 @@ public class AgendaRequestDto  implements Serializable {
     private int maxVote;
 
     private AgendaModel.Type type;
+
+    public AgendaRequestDto(AgendaModel agenda){
+        this.description = agenda.getDescription();
+        this.startDate = agenda.getStartDateTime();
+        this.endDate = agenda.getEndDateTime();
+        this.status = agenda.getStatus();
+        this.maxVote = agenda.getMaxVote();
+        this.type = agenda.getType();
+    }
 }

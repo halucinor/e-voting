@@ -6,6 +6,8 @@ import com.gabia.evoting.domain.VoteModel;
 import com.gabia.evoting.repository.AgendaRepository;
 import com.gabia.evoting.repository.UserRepository;
 import com.gabia.evoting.repository.VoteRepository;
+import com.gabia.evoting.web.dto.AgendaVoteResponseDto;
+import com.gabia.evoting.web.dto.UserInfo;
 import com.gabia.evoting.web.dto.VoteRequestDto;
 import com.gabia.evoting.web.dto.VoteResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,10 +27,9 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
 
-    @Transactional(isolation=Isolation.SERIALIZABLE)
-    public VoteResponseDto vote(UserModel user,VoteRequestDto voteDto){
+    @Transactional
+    public synchronized VoteResponseDto vote(UserModel user,VoteRequestDto voteDto){
 
-//        UserModel user = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("no user id : 1"));
         VoteResponseDto response = new VoteResponseDto();
         // Agenda check
         AgendaModel agenda =  agendaRepository.findById(voteDto.getAgendaId()).orElseThrow(IllegalArgumentException::new);
@@ -36,10 +38,6 @@ public class VoteService {
 
         // User check or If Agenda is not started return false
         if(user.getVoteCount() < voteDto.getVoteCount() || agenda.getStatus() != AgendaModel.Status.START){
-//            response.builder()
-//                    .voteStatus("fail")
-//                    .voteFailCount(voteDto.getVoteCount())
-//                    .voteSuccessCount(0L).build();
             response.setVoteStatus("fail");
             response.setVoteFailCount(voteDto.getVoteCount());
             response.setVoteSuccessCount(0L);
@@ -56,14 +54,14 @@ public class VoteService {
 
         // Agenda Limitation check
         if(agenda.getType() == AgendaModel.Type.LIMIT){
-
             //If it has limitation, we should check remain vote count
             Long sumOfVote = getSumOfVote(agenda);
+            System.out.println("Sum of Vote : " + sumOfVote);
             Long remainVote = agenda.getMaxVote() - sumOfVote;
 
             //If agenda still have remain vote count then make vote
             if(remainVote <= 0) {
-                response.setVoteStatus("partial success");
+                response.setVoteStatus("fail");
                 response.setVoteFailCount(voteDto.getVoteCount());
                 response.setVoteSuccessCount(0L);
                 return response;
@@ -80,7 +78,7 @@ public class VoteService {
         }
         // Make Vote
         voteModel.setVotingDateTime(LocalDateTime.now()); //vote time
-        voteRepository.save(voteModel);
+        voteRepository.saveAndFlush(voteModel);
 
         //
         updateUserVote(user, successVote);
@@ -98,14 +96,43 @@ public class VoteService {
         Long total = 0L;
 
         // TODO : change with stream map
-        for (VoteModel vote : voteList)
+        for (VoteModel vote : voteList) {
             total += vote.getCount();
-
+        }
         return total;
     }
 
     public void updateUserVote(UserModel user, Long subtract){
         user.setVoteCount(user.getVoteCount() - subtract);
         userRepository.save(user);
+    }
+
+    public AgendaVoteResponseDto getVoteStatus(Long agendaId, Boolean isAdmin){
+        List<VoteModel> voteList = voteRepository.findAllByAgendaId(agendaId);
+        AgendaVoteResponseDto responseDto = new AgendaVoteResponseDto();
+
+        responseDto.setAgendaId(agendaId);
+        if(isAdmin) {
+            List<UserInfo> userInfos = new ArrayList<>();
+            for (VoteModel vote : voteList) {
+                VoteModel.Type type = vote.getType();
+                responseDto.addVote(type, vote.getCount());
+                UserInfo user = UserInfo.builder()
+                        .id(vote.getUser().getId())
+                        .email(vote.getUser().getEmail())
+                        .type(vote.getType())
+                        .voteCnt(vote.getCount())
+                        .build();
+
+                userInfos.add(user);
+            }
+            responseDto.setUserInfoList(userInfos);
+        }else{
+            for (VoteModel vote : voteList) {
+                VoteModel.Type type = vote.getType();
+                responseDto.addVote(type, vote.getCount());
+            }
+        }
+        return responseDto;
     }
 }
