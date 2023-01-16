@@ -26,8 +26,9 @@ public class AgendaService {
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
     }
-    public Optional<AgendaModel> findById(Long agendaId){
-        return agendaRepository.findById(agendaId);
+    public AgendaModel findById(Long agendaId){
+        return agendaRepository.findById(agendaId).orElseThrow(()
+                -> new IllegalArgumentException("안건이 존재하지 않습니다. id = " + agendaId));
     }
 
     @Transactional
@@ -46,32 +47,30 @@ public class AgendaService {
     @Transactional
     public void delete(Long agendaId){
         AgendaModel agenda = agendaRepository.findById(agendaId)
-                        .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
+                        .orElseThrow(() -> new IllegalArgumentException("안건이 존재하지 않습니다 id =" + agendaId));
 
         agendaRepository.delete(agenda);
     }
 
     @Transactional
-    public AgendaModel startAgenda(Long agendaId){
+    public void startAgenda(Long agendaId){
         AgendaModel agenda = agendaRepository.findById(agendaId)
-                .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
+                .orElseThrow(() -> new IllegalArgumentException("안건이 존재하지 않습니다 id =" + agendaId));
 
         agenda.setStartDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         agenda.setStatus(AgendaModel.Status.START);
 
         agendaRepository.save(agenda);
-        return agenda;
     }
 
     @Transactional
-    public AgendaModel endAgenda(Long agendaId){
+    public void endAgenda(Long agendaId){
         AgendaModel agenda = agendaRepository.findById(agendaId)
-                .orElseThrow(() -> new IllegalArgumentException("no post for the id =" + agendaId));
+                .orElseThrow(() -> new IllegalArgumentException("안건이 존재하지 않습니다 id =" + agendaId));
 
         agenda.setEndDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         agenda.setStatus(AgendaModel.Status.END);
 
         agendaRepository.save(agenda);
-        return agenda;
     }
 }

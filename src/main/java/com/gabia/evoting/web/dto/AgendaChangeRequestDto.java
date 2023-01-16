@@ -13,7 +13,5 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class AgendaChangeRequestDto implements Serializable {
-    private Long id;
-
     private AgendaModel.Status status;
 }
