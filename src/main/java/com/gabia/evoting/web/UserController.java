@@ -25,7 +25,7 @@ public class UserController extends AbstractController{
     private final UserService userService;
 
     @Operation(summary = "로그인"
-            , description = "ID 와 Password로 로그인 작업을 수행합니다.")
+            , description = "Email 와 Password로 로그인 작업을 수행하고 JWT를 넘겨받습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "401", description = "Unauthorized !!"),
@@ -38,8 +38,8 @@ public class UserController extends AbstractController{
             return new ResponseEntity<>(new JwtResponseDto(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
     }
-    @Operation(summary = "로그인"
-            , description = "ID 와 Password로 로그인 작업을 수행합니다.")
+    @Operation(summary = "회원가입"
+            , description = "Email과 Password로 회원가입을 수행합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Created !!"),
             @ApiResponse(responseCode = "409", description = "Conflict !!"),
