@@ -40,10 +40,9 @@ public abstract class AbstractController {
         return (UserModel) principal;
 
     }
-
-    protected boolean isGuestUser() {
+    protected boolean isAdminUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        return authorities.contains(new SimpleGrantedAuthority("ROLE_GUEST"));
+        return authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 }

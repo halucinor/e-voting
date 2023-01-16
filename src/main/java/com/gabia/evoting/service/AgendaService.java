@@ -5,6 +5,7 @@ import com.gabia.evoting.domain.AgendaModel;
 import com.gabia.evoting.repository.AgendaRepository;
 import com.gabia.evoting.web.dto.AgendaRequestDto;
 import com.gabia.evoting.web.dto.AgendaResponseDto;
+import com.gabia.evoting.web.dto.AgendaVoteResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AgendaService {
     private final AgendaRepository agendaRepository;
-
 
     public List<AgendaResponseDto> findAll(){
         return agendaRepository.findAll().stream().map(AgendaResponseDto::new).collect(Collectors.toList());
@@ -62,6 +62,7 @@ public class AgendaService {
         agendaRepository.save(agenda);
         return agenda;
     }
+
     @Transactional
     public AgendaModel endAgenda(Long agendaId){
         AgendaModel agenda = agendaRepository.findById(agendaId)
