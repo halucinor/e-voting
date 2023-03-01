@@ -21,8 +21,6 @@ test:
     - echo test
 
 visualization:
-  rules:
-    - !reference [.merge_rules, rules]
   stage: visualization
   needs: ["test"]
   script:
