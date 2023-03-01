@@ -37,16 +37,12 @@ build:
     - echo build
 
 package:
-  rules:
-    - !reference [.push_rules, rules]
   stage: package
   needs: ["build"]
   script:
     - echo package
 
 deploy:
-  rules:
-    - !reference [.push_rules, rules]
   stage: deploy
   needs: ["package"]
   script:
