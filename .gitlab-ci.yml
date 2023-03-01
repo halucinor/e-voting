@@ -22,6 +22,7 @@ test:
 
 visualization:
   stage: visualization
+  when : always
   needs: ["test"]
   script:
     - echo visualization
