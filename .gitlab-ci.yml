@@ -35,7 +35,6 @@ build:
     - !reference [.push_rules, rules]
     - when: always
   stage: build
-  needs: ["test"]
   script:
     - echo build
 
