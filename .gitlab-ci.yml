@@ -1,7 +1,7 @@
 stages:
   - test
-  - build
   - visualization
+  - build
   - package
   - deploy
 
@@ -27,28 +27,23 @@ visualization:
   needs: ["test"]
   script:
     - echo visualization
+    - exit 1
 
 build:
   rules:
     - !reference [.merge_rules, rules]
-    - when: always
     - !reference [.push_rules, rules]
-    - when: always
   stage: build
   script:
     - echo build
 
 package:
-  rules:
-    - !reference [.push_rules, rules]
   stage: package
   needs: ["build"]
   script:
     - echo package
 
 deploy:
-  rules:
-    - !reference [.push_rules, rules]
   stage: deploy
   needs: ["package"]
   script:
