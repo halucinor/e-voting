@@ -19,6 +19,7 @@ test:
   stage: test
   script:
     - echo test
+    - exit 1
 
 visualization:
   rules:
@@ -27,7 +28,6 @@ visualization:
   needs: ["test"]
   script:
     - echo visualization
-    - exit 1
 
 build:
   rules:
