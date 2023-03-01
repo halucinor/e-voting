@@ -31,9 +31,11 @@ visualization:
 build:
   rules:
     - !reference [.merge_rules, rules]
-    - needs: [ "test" ]
+    - when: always
     - !reference [.push_rules, rules]
+    - when: always
   stage: build
+  needs: ["test"]
   script:
     - echo build
 
