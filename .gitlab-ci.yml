@@ -21,8 +21,9 @@ test:
     - echo test
 
 visualization:
+  rules:
+    - when: always
   stage: visualization
-  when : always
   needs: ["test"]
   script:
     - echo visualization
