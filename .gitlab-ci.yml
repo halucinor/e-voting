@@ -21,7 +21,6 @@ test:
 
 visualization:
   rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"'
     - !reference [.merge_rules, rules]
   stage: visualization
   needs: ["test"]
