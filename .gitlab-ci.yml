@@ -1,7 +1,7 @@
 stages:
   - test
-  - build
   - visualization
+  - build
   - package
   - deploy
 
@@ -31,9 +31,7 @@ visualization:
 build:
   rules:
     - !reference [.merge_rules, rules]
-    - when: always
     - !reference [.push_rules, rules]
-    - when: always
   stage: build
   script:
     - echo build
