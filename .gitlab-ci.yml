@@ -19,8 +19,11 @@ test:
   stage: test
   script:
     - echo test
+    - exit 1
 
 visualization:
+  rules:
+    - !reference [.merge_rules, rules]
   stage: visualization
   needs: ["test"]
   script:
