@@ -17,6 +17,7 @@ test:
   rules:
     - !reference [.merge_rules, rules]
   stage: test
+  script:
     - echo test
 
 visualization:
