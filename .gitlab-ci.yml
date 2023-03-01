@@ -1,0 +1,54 @@
+stages:
+  - test
+  - build
+  - visualization
+  - package
+  - deploy
+
+.merge_rules:
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'
+
+.push_rules:
+  rules:
+    - if : '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"'
+
+test:
+  rules:
+    - !reference [.merge_rules, rules]
+  stage: test
+  script:
+    - echo test
+
+visualization:
+  rules:
+    - !reference [.merge_rules, rules]
+  stage: visualization
+  needs: ["test"]
+  script:
+    - echo visualization
+
+build:
+  rules:
+    - !reference [.merge_rules, rules]
+    - !reference [.push_rules, rules]
+  stage: build
+  needs: [ "test" ]
+  script:
+    - echo build
+
+package:
+  rules:
+    - !reference [.push_rules, rules]
+  stage: package
+  needs: ["build"]
+  script:
+    - echo package
+
+deploy:
+  rules:
+    - !reference [.push_rules, rules]
+  stage: deploy
+  needs: ["package"]
+  script:
+    - echo deploy
