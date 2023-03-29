@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  mysql-database:
+    image: mysql:8.0.22
+    environment:
+      - MYSQL_DATABASE=e_voting
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:
+      - 3306:3306
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    volumes:
+      - C:\Users\User\workspace\mysql:/var/lib/mysql
+    networks:
+      - springboot-mysql-net
+  test-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
+    environment:
+      SPRING_DATASOURCE_URL :
+    depends_on:
+      - mysql-database
+    networks:
+      - springboot-mysql-net
+
+networks:
+  springboot-mysql-net:
+    driver: bridge
